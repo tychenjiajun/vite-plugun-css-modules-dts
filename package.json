@@ -1,0 +1,44 @@
+{
+  "name": "@luban-ui/vite-plugun-css-modules-dts",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Generate .d.ts for css modules file",
+  "author": "Season Chen season.chen.i@foxmail.com> (https://github.com/ccqgithub/)",
+  "license": "MIT",
+  "homepage": "https://github.com/luban-dev/vite-plugun-css-modules-dts",
+  "keywords": [
+    "css modules",
+    "typescript"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts",
+    "release": "npm publish --access=public"
+  },
+  "peerDependencies": {
+    "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "glob": "^10.3.10",
+    "minimatch": "^9.0.3",
+    "node-watch": "^0.7.4"
+  },
+  "devDependencies": {
+    "@luban-ui/eslint-config": "^1.2.9",
+    "@types/node": "^20.10.5",
+    "eslint": "^8.56.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3"
+  }
+}
