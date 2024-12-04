@@ -49,6 +49,7 @@ var start = (opts) => {
     files = ["**/*.module.scss"],
     generateAll = true,
     namedExports = true,
+    watch = true,
     getKeys
   } = opts;
   async function updateFile(f) {
@@ -90,22 +91,24 @@ export const ${key}: string;`;
           });
         });
       }
-      const watcher = (0, import_node_watch.default)(
-        root,
-        {
-          recursive: true,
-          filter: (f) => (0, import_minimatch.minimatch)(f, p)
-        },
-        (evt, name) => {
-          if (evt === "update")
-            updateFile(name);
-        }
-      );
-      watcher.on("error", (e) => {
-        console.log("[cssModulesDts Error]");
-        console.log(e);
-      });
-      watchers.push(watcher);
+      if (watch) {
+        const watcher = (0, import_node_watch.default)(
+          root,
+          {
+            recursive: true,
+            filter: (f) => (0, import_minimatch.minimatch)(f, p)
+          },
+          (evt, name) => {
+            if (evt === "update")
+              updateFile(name);
+          }
+        );
+        watcher.on("error", (e) => {
+          console.log("[cssModulesDts Error]");
+          console.log(e);
+        });
+        watchers.push(watcher);
+      }
     });
     const stop = () => {
       watchers.forEach((watcher) => {
@@ -133,12 +136,13 @@ function cssModulesDtsPlugin(options = {}) {
     },
     buildStart: () => {
       const started = !!import_node_process2.default.env.LUBAN_CSS_MODULES_DTS_PLUGIN_STARTED;
-      const { files = ["**/*.module.scss"], namedExports = true } = options;
+      const { files = ["**/*.module.scss"], namedExports = true, watch = true } = options;
       stop = start({
         root,
         files,
         generateAll: !started,
         namedExports,
+        watch,
         getKeys: async (file, code) => {
           const res = await (0, import_vite.preprocessCSS)(code, file, config);
           return Object.keys(res.modules || {});

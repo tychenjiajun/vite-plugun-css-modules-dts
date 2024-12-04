@@ -6,6 +6,7 @@ import { start } from './cssModulesDts';
 export interface Options {
   files?: string[];
   namedExports?: boolean;
+  watch?: boolean;
 }
 
 function cssModulesDtsPlugin(options: Options = {}): Plugin {
@@ -21,12 +22,13 @@ function cssModulesDtsPlugin(options: Options = {}): Plugin {
     },
     buildStart: () => {
       const started = !!process.env.LUBAN_CSS_MODULES_DTS_PLUGIN_STARTED;
-      const { files = ['**/*.module.scss'], namedExports = true } = options;
+      const { files = ['**/*.module.scss'], namedExports = true, watch = true } = options;
       stop = start({
         root,
         files,
         generateAll: !started,
         namedExports,
+        watch,
         getKeys: async (file, code) => {
           const res = await preprocessCSS(code, file, config);
           return Object.keys(res.modules || {});

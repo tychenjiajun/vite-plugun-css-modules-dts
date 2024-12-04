@@ -2,7 +2,7 @@ import path from 'node:path';
 import process from 'node:process';
 import fs from 'node:fs';
 import type { Watcher } from 'node-watch';
-import watch from 'node-watch';
+import nodeWatch from 'node-watch';
 import { glob } from 'glob';
 import { minimatch } from 'minimatch';
 
@@ -11,6 +11,7 @@ export const start = (opts: {
   files?: string[];
   generateAll?: boolean;
   namedExports?: boolean;
+  watch?: boolean;
   getKeys: (f: string, code: string) => Promise<string[]>;
 }) => {
   const {
@@ -18,6 +19,7 @@ export const start = (opts: {
     files = ['**/*.module.scss'],
     generateAll = true,
     namedExports = true,
+    watch = true,
     getKeys
   } = opts;
 
@@ -65,22 +67,24 @@ export const start = (opts: {
         });
       }
 
-      const watcher = watch(
-        root,
-        {
-          recursive: true,
-          filter: f => minimatch(f, p)
-        },
-        (evt, name) => {
-          if (evt === 'update')
-            updateFile(name);
-        }
-      );
-      watcher.on('error', (e) => {
-        console.log('[cssModulesDts Error]');
-        console.log(e);
-      });
-      watchers.push(watcher);
+      if (watch) {
+        const watcher = nodeWatch(
+          root,
+          {
+            recursive: true,
+            filter: f => minimatch(f, p)
+          },
+          (evt, name) => {
+            if (evt === 'update')
+              updateFile(name);
+          }
+        );
+        watcher.on('error', (e) => {
+          console.log('[cssModulesDts Error]');
+          console.log(e);
+        });
+        watchers.push(watcher);
+      }
     });
 
     const stop = () => {

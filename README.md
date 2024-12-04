@@ -32,7 +32,8 @@ export default defineConfig(() => {
         files: [
           '**/*.module.scss'
         ],
-        namedExports: true
+        namedExports: true,
+        watch: true
       })
     ]
     // ...others

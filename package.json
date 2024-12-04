@@ -1,7 +1,7 @@
 {
   "name": "@luban-ui/vite-plugun-css-modules-dts",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Generate .d.ts for css modules file",
   "author": "Season Chen season.chen.i@foxmail.com> (https://github.com/ccqgithub/)",
   "license": "MIT",
