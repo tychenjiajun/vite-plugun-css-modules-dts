@@ -37,7 +37,7 @@ export const start = (opts: {
       } else {
         output += 'declare const styles: {';
         keys.forEach((key) => {
-          output += `\n  readonly ${key}: string;`;
+          output += `\n  readonly '${key}': string;`;
         });
         output += '\n}';
         output += '\nexport = styles;';
